@@ -1,5 +1,7 @@
 # Sudoker-数独客
-![](https://img.shields.io/badge/version-0.0.1-blue) 
+![](https://img.shields.io/badge/version-0.0.1-blue) <br/>
+<div align='center'><img src='sdk.png'/></div>
+
 #### 介绍
 😄 数独客，致力于构建国内一流的开源在线数独平台，积极接受社区贡献。（本仓库为后端）
 
