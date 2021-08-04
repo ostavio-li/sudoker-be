@@ -19,10 +19,10 @@
 （项目启动阶段，尚无二进制产物）
 
 #### 社区
-Sudoker 社区诚招热爱技术的小伙伴！
-邮件列表：sudoker@group.163.com
+Sudoker 社区诚招热爱技术的小伙伴！<br/>
+邮件列表：sudoker@group.163.com<br/>
 QQ 群：
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0804/141755_62570102_5289399.jpeg "sudoker.jpg")
+![QQ群](https://images.gitee.com/uploads/images/2021/0804/142121_6f1457a5_5289399.jpeg "sudoker.jpg")
 
 ### 参与贡献
 本项目当前核心开发者为2人，积极接受社区贡献，包括但不限于：
