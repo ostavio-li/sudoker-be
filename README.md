@@ -21,7 +21,7 @@
 #### 社区
 Sudoker 社区诚招热爱技术的小伙伴！<br/>
 邮件列表：sudoker@group.163.com<br/>
-QQ 群：
+QQ 群：<br/>
 ![QQ群](https://images.gitee.com/uploads/images/2021/0804/142121_6f1457a5_5289399.jpeg "sudoker.jpg")
 
 ### 参与贡献
