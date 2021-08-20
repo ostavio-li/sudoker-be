@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum ProductType {
 
+    //
     BOOK(1, "书籍"),
     MERCH(2, "周边");
 
