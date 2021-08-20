@@ -25,7 +25,7 @@
 Sudoker 社区诚招热爱技术的小伙伴！<br/>
 邮件列表：sudoker@group.163.com<br/>
 QQ 群：<br/>
-![QQ群](https://images.gitee.com/uploads/images/2021/0804/142121_6f1457a5_5289399.jpeg "sudoker.jpg")
+![社区QQ群](https://images.gitee.com/uploads/images/2021/0820/111452_8e22b8ae_5289399.jpeg "qq.jpeg")
 
 ### 参与贡献
 本项目当前核心开发者为2人，积极接受社区贡献，包括但不限于：
