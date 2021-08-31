@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: sudoku-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   # RabbitMQ
   rabbitmq:
     host: localhost
@@ -20,12 +24,12 @@ spring:
       maximum-pool-size: 10
 
 # Eureka
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://localhost:8000/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8000/eureka/
 
 mybatis-plus:
   type-enums-package: com.carlosli.sudoker.sudoku.constant

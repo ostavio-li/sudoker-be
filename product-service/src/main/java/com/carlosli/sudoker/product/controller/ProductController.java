@@ -5,6 +5,7 @@ import com.carlosli.sudoker.product.service.IProductService;
 import com.carlosli.sudoker.product.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.carlosli.common.vo.ResultVO;
 
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("")
-    public Result<List<Product>> list() {
-        return Result.success(productService.list());
+    public ResultVO<List<Product>> list() {
+        return new ResultVO<List<Product>>().success().data(productService.list());
     }
 
     @PostMapping("")

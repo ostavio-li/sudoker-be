@@ -8,6 +8,7 @@
         <module>product-service</module>
         <module>user-service</module>
         <module>sudoku-service</module>
+        <module>common</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
