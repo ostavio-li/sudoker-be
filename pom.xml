@@ -24,6 +24,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+        <nacos.version>2021.1</nacos.version>
     </properties>
     <dependencies>
 <!--        <dependency>-->
