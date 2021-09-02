@@ -14,13 +14,24 @@ spring:
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/product/**
+            - Path=/api/product/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             - name: Retry
               args:
                 retries: 3
                 statuses: BAD_GATEWAY
+                methods: GET, POST
+        - id: sudoku-service
+          uri: lb://sudoku-service
+          predicates:
+            - Path=/api/sudoku/**
+          filters:
+            - StripPrefix=2
+            - name: Retry
+              args:
+                retries: 3
+                status: BAD_GATEWAY
                 methods: GET, POST
 
 

@@ -15,5 +15,5 @@ import java.util.List;
 @FeignClient(value = "product-service")
 public interface ProductClient {
     @GetMapping("/p")
-    ResultVO<List<Product>> list();
+    List<Product> list();
 }

@@ -22,8 +22,8 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("")
-    public ResultVO<List<Product>> list() {
-        return new ResultVO<List<Product>>().success().data(productService.list());
+    public List<Product> list() {
+        return productService.list();
     }
 
     @PostMapping("")
