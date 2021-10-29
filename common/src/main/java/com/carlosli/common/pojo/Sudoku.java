@@ -1,6 +1,7 @@
 package com.carlosli.common.pojo;
 
-import com.sun.org.apache.bcel.internal.generic.ArrayElementValueGen;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,29 +15,30 @@ import java.util.Arrays;
 
 @Data
 @AllArgsConstructor
-public class Board implements Serializable {
+public class Sudoku implements Serializable {
 
     private static final int ROWS = 9;
     private static final int COLUMNS = 9;
 
     private static final long serialVersionUID = -6533099186502639008L;
 
-    int[][] data;
+    private int[][] data;
 
-    public Board() {
-        this.data = new int[9][9];
+    public Sudoku() {
+        this.data = new int[ROWS][COLUMNS];
+        this.init(0);
     }
 
+    /**
+     * 初始化，填充 init
+     * @param init 填充数
+     */
     public void init(int init) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 this.data[i][j] = init;
             }
         }
-    }
-
-    public void init() {
-        this.init(0);
     }
 
     public int[] getRow(int row) {
@@ -96,12 +98,21 @@ public class Board implements Serializable {
         return false;
     }
 
+    public static String parse(Sudoku sudoku) {
+        return JSON.toJSONString(sudoku);
+    }
+
+    public static Sudoku toBoard(String s) {
+        return JSONObject.parseObject(s, Sudoku.class);
+    }
+
+
     public boolean isLegal() {
         return true;
     }
 
     public static void main(String[] args) {
-        Board board = new Board();
+        Sudoku sudoku = new Sudoku();
         int[][] data = new int[][]{
                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
                 {4, 2, 5, 9, 3, 4, 7, 1, 6},
@@ -113,14 +124,15 @@ public class Board implements Serializable {
                 {6, 5, 4, 9, 8, 7, 3, 2, 1},
                 {3, 2, 1, 6, 5, 4, 9, 8, 7}
         };
-        board.setData(data);
-
-        int[] row = board.getRow(3);
-        int[] col = board.getCol(4);
-        boolean b = board.palaceContains(3, 2, 4);
+        sudoku.setData(data);
 
 
-        System.out.println(b);
+        String s = JSON.toJSONString(sudoku);
+        Sudoku sudoku1 = JSONObject.parseObject(s, Sudoku.class);
+
+        System.out.println(Arrays.toString(sudoku1.getRow(0)));
+
+//        System.out.println(sudoku1);
 
 
     }

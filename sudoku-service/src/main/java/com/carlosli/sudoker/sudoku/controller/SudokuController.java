@@ -1,6 +1,6 @@
 package com.carlosli.sudoker.sudoku.controller;
 
-import com.carlosli.common.pojo.Board;
+import com.carlosli.common.pojo.Sudoku;
 import com.carlosli.common.pojo.Product;
 import com.carlosli.common.vo.ResultVO;
 import com.carlosli.sudoker.sudoku.client.ProductClient;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,21 +30,21 @@ public class SudokuController {
     }
 
     @GetMapping("/show")
-    public ResultVO<Board> show() {
-        Board board = new Board();
+    public ResultVO<Sudoku> show() {
+        Sudoku sudoku = new Sudoku();
         int[][] data = new int[][]{
-                {1, 2, 3, 4, 5, 6, 7, 8, 9},
-                {4, 2, 5, 9, 3, 4, 7, 1, 6},
-                {7, 1, 9, 3, 6, 5, 4, 7, 2},
-                {2, 1, 3, 4, 8, 9, 7, 5, 6},
-                {7, 6, 9, 1, 8, 2, 4, 5, 3},
-                {9, 6, 3, 1, 2, 4, 7, 8, 5},
-                {4, 3, 2, 1, 9, 8, 7, 6, 5},
-                {6, 5, 4, 9, 8, 7, 3, 2, 1},
-                {3, 2, 1, 6, 5, 4, 9, 8, 7}
+                {0, 7, 9, 0, 0, 0, 0, 6, 2},
+                {0, 0, 0, 0, 3, 0, 8, 0, 0},
+                {6, 8, 0, 0, 0, 9, 0, 0, 0},
+                {5, 0, 0, 0, 9, 0, 0, 8, 3},
+                {0, 0, 0, 0, 5, 2, 6, 0, 1},
+                {0, 0, 7, 0, 0, 6, 0, 0, 0},
+                {0, 0, 2, 1, 0, 3, 0, 0, 0},
+                {1, 6, 0, 9, 0, 5, 2, 3, 4},
+                {7, 5, 3, 8, 0, 4, 9, 0, 6}
         };
-        board.setData(data);
-        return new ResultVO<Board>().success().data(board);
+        sudoku.setData(data);
+        return new ResultVO<Sudoku>().success().data(sudoku);
 
     }
 
