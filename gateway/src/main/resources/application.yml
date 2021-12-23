@@ -33,7 +33,17 @@ spring:
                 retries: 3
                 status: BAD_GATEWAY
                 methods: GET, POST
-
+        - id: user-service
+          url: lb://user-service
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=2
+            - name: Retry
+              args:
+                retries: 3
+                status: BAD_GATEWAY
+                methods: GET, POST
 
 
 #eureka:

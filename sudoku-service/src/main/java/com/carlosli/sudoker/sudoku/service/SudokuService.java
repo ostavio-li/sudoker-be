@@ -19,13 +19,6 @@ import java.util.List;
 @Service
 public class SudokuService extends ServiceImpl<SudokuMapper, SudokuDO> {
 
-//    public void getSudoku() {
-//        List<SudokuDO> list = this.list();
-//        SudokuDO sudokuDO = list.get(0);
-//        String sudokuStr = sudokuDO.getSudoku();
-//
-//    }
-
     public String asString(Sudoku sudoku) {
         return JSON.toJSONString(sudoku.getData());
     }
