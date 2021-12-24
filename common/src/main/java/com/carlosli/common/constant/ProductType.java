@@ -1,6 +1,6 @@
 package com.carlosli.common.constant;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
+//import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -13,7 +13,7 @@ public enum ProductType {
     MERCH(2, "周边");
 
     // 代码
-    @EnumValue
+//    @EnumValue
     private final Integer code;
     // 描述
     @JsonValue

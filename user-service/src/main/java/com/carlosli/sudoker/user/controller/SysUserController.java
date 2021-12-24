@@ -1,5 +1,6 @@
 package com.carlosli.sudoker.user.controller;
 
+import com.carlosli.common.vo.ResultVO;
 import com.carlosli.sudoker.user.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,8 @@ public class SysUserController {
     private ISysUserService userService;
 
     @GetMapping("")
-    public void list() {
-
+    public ResultVO<String> list() {
+        return new ResultVO<>("200", "哈哈哈", "这是List");
     }
 
 }

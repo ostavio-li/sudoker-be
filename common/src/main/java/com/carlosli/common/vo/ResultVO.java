@@ -32,4 +32,9 @@ public class ResultVO<T> implements Serializable {
         return this;
     }
 
+    public ResultVO<T> message(String message) {
+        this.message = message;
+        return this;
+    }
+
 }
