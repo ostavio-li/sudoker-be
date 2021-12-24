@@ -34,7 +34,7 @@ spring:
                 status: BAD_GATEWAY
                 methods: GET, POST
         - id: user-service
-          url: lb://user-service
+          uri: lb://user-service
           predicates:
             - Path=/api/user/**
           filters:
