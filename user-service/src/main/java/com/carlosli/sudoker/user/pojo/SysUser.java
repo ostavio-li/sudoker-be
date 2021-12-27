@@ -1,6 +1,9 @@
 package com.carlosli.sudoker.user.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,12 +13,15 @@ import java.io.Serializable;
  */
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@TableName("sys_user")
 public class SysUser implements Serializable {
 
-    public static final long serialVersionUID = -50005L;
+    private static final long serialVersionUID = -2972177886426469678L;
 
     private Long id;
-    private String sysUsername;
-
+    private String username;
+    private String password;
 
 }
