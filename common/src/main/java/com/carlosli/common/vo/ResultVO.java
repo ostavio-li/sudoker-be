@@ -24,6 +24,13 @@ public class ResultVO<T> implements Serializable {
 
     public ResultVO<T> success() {
         this.code = "200";
+        this.message = "success";
+        return this;
+    }
+
+    public ResultVO<T> fail() {
+        this.code = "500";
+        this.message = "fail";
         return this;
     }
 

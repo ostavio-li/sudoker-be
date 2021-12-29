@@ -1,8 +1,14 @@
 package com.carlosli.sudoker.user.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.carlosli.common.exc.AuthenticateException;
+import com.carlosli.common.exc.UserNotFoundException;
+import com.carlosli.common.util.TokenUtil;
 import com.carlosli.common.vo.LoginVO;
 import com.carlosli.common.vo.ResultVO;
 import com.carlosli.sudoker.user.pojo.SysResource;
+import com.carlosli.sudoker.user.pojo.SysUser;
 import com.carlosli.sudoker.user.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +29,23 @@ public class SysUserController {
 
     @PostMapping("/login")
     public ResultVO<String> login(@RequestBody LoginVO loginVO) {
+        String username = loginVO.getUsername();
+        String password = loginVO.getPassword();
 
-        return new ResultVO<>("200", "哈哈哈", "这是 " + loginVO.getUsername());
+        LambdaQueryWrapper<SysUser> usernameWrapper = new QueryWrapper<SysUser>().lambda()
+                .eq(SysUser::getUsername, username);
+        List<SysUser> users = userService.list(usernameWrapper);
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("用户 " + username + " 不存在");
+        } else {
+            SysUser user = users.get(0);
+            if (password.equals(user.getPassword())) {
+                return new ResultVO<String>().success().data(TokenUtil.generate(username));
+            } else {
+                throw new AuthenticateException("密码错误");
+            }
+        }
+
     }
 
     @GetMapping("/resource")

@@ -17,13 +17,9 @@ public class TokenUtil {
     public static String generate(String username) {
         return JWT.create()
                 .setPayload("username", username)
-                .setExpiresAt(DateUtil.tomorrow())
+//                .setExpiresAt(DateUtil.tomorrow())
                 .setSigner(JWTSignerUtil.none())
                 .sign();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(generate("拉美西斯"));
     }
 
     public static boolean check(String token) {

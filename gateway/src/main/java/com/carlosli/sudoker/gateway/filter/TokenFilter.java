@@ -2,7 +2,9 @@ package com.carlosli.sudoker.gateway.filter;
 
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
+import com.alibaba.fastjson.JSON;
 import com.carlosli.common.util.TokenUtil;
+import com.carlosli.common.vo.ResultVO;
 import com.carlosli.sudoker.gateway.client.UserClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
@@ -55,7 +60,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
         // 请求无需鉴权，直接放通
         // 包括 未登录即可访问的接口
         if (WHITE_LIST.contains(path)) {
-            logger.info("该请求无需鉴权");
             return chain.filter(exchange);
         }
 
@@ -90,13 +94,13 @@ public class TokenFilter implements GlobalFilter, Ordered {
             // 无 Token，直接返回未登录
             logger.warn("无 Token");
 
-//            ResultVO<Void> result = new ResultVO<>(HttpStatus.UNAUTHORIZED.toString(), "未登录", null);
+            ResultVO<Void> result = new ResultVO<>("500", "未登录", null);
 //
-//            ServerHttpResponse response = exchange.getResponse();
-//            byte[] cause = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
-//            DataBuffer buffer = response.bufferFactory().wrap(cause);
-//            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
-//            return response.writeWith(Mono.just(buffer));
+            ServerHttpResponse response = exchange.getResponse();
+            byte[] cause = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = response.bufferFactory().wrap(cause);
+            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+            return response.writeWith(Mono.just(buffer));
         }
 
 
