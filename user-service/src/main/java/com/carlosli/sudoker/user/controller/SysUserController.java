@@ -10,7 +10,9 @@ import com.carlosli.common.vo.ResultVO;
 import com.carlosli.sudoker.user.pojo.SysResource;
 import com.carlosli.sudoker.user.pojo.SysUser;
 import com.carlosli.sudoker.user.service.SysUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
  * @date 2021/7/16
  */
 
+@Slf4j
 @RestController
 @RequestMapping("/")
 public class SysUserController {
@@ -27,11 +30,18 @@ public class SysUserController {
     @Autowired
     private SysUserService userService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @PostMapping("/login")
     public ResultVO<String> login(@RequestBody LoginVO loginVO) {
+
+        log.info("开始登录...");
+
         String username = loginVO.getUsername();
         String password = loginVO.getPassword();
 
+        log.info("{} -- {}", username, password);
         LambdaQueryWrapper<SysUser> usernameWrapper = new QueryWrapper<SysUser>().lambda()
                 .eq(SysUser::getUsername, username);
         List<SysUser> users = userService.list(usernameWrapper);
@@ -40,6 +50,8 @@ public class SysUserController {
         } else {
             SysUser user = users.get(0);
             if (password.equals(user.getPassword())) {
+//                redisTemplate.opsForValue().set(username, password);
+
                 return new ResultVO<String>().success().data(TokenUtil.generate(username));
             } else {
                 throw new AuthenticateException("密码错误");

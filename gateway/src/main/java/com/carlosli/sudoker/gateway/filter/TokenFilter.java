@@ -60,6 +60,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
         // 请求无需鉴权，直接放通
         // 包括 未登录即可访问的接口
         if (WHITE_LIST.contains(path)) {
+            logger.info("无需鉴权");
             return chain.filter(exchange);
         }
 
@@ -90,6 +91,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
 //            } catch (InterruptedException | ExecutionException e) {
 //                e.printStackTrace();
 //            }
+
         } else {
             // 无 Token，直接返回未登录
             logger.warn("无 Token");

@@ -1,5 +1,6 @@
 package com.carlosli.sudoker.sudoku.service;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,4 +27,13 @@ public class SudokuService extends ServiceImpl<SudokuMapper, SudokuDO> {
     public boolean save(String sudokuStr) {
         return super.save(new SudokuDO(null, sudokuStr));
     }
+
+    @SentinelResource(value = "getSudoku")
+    public Sudoku getSudoku(Long id) {
+        SudokuDO sudokuDO = getById(id);
+        List<int[]> list = JSONArray.parseArray(sudokuDO.getSudoku(), int[].class);
+        int[][] data = new int[9][9];
+        return new Sudoku(list.toArray(data));
+    }
+
 }

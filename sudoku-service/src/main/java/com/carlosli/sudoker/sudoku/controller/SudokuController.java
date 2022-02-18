@@ -10,6 +10,7 @@ import com.carlosli.sudoker.sudoku.service.SudokuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,11 +31,20 @@ public class SudokuController {
 
     @GetMapping("")
     public ResultVO get() {
-        SudokuDO sudokuDO = sudokuService.getById(1);
-        List<int[]> list = JSONArray.parseArray(sudokuDO.getSudoku(), int[].class);
-        int[][] data = new int[9][9];
-        return new ResultVO("200", "成功", new Sudoku(list.toArray(data)));
+//        initFlowRules();
+        return new ResultVO("200", "成功", sudokuService.getSudoku(1L));
     }
+
+//    private static void initFlowRules() {
+//        List<FlowRule> rules = new ArrayList<>();
+//        FlowRule rule = new FlowRule();
+//        rule.setResource("HelloWorld");
+//        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+//        // Set limit QPS to 1.
+//        rule.setCount(1);
+//        rules.add(rule);
+//        FlowRuleManager.loadRules(rules);
+//    }
 
     @PostMapping("")
     public ResultVO save() {
