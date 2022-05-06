@@ -3,9 +3,10 @@ package com.carlosli.sudoker.gateway.filter;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import com.alibaba.fastjson.JSON;
+import com.carlosli.common.client.SysUserClient;
 import com.carlosli.common.util.TokenUtil;
 import com.carlosli.common.vo.ResultVO;
-import com.carlosli.sudoker.gateway.client.UserClient;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +41,19 @@ public class TokenFilter implements GlobalFilter, Ordered {
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     @Autowired
-    private UserClient userClient;
+    private SysUserClient sysUserClient;
 
-    // 白名单
-    private static final List<String> WHITE_LIST = Collections.singletonList("/api/user/login");
+    /**
+     * 白名单
+     */
+    private static final List<String> ALLOW_LIST = Collections.singletonList("/api/user/login");
 
     /**
      * 网关过滤逻辑<br/>
      * 校验 Token
      */
+    @SuppressWarnings("BlockingMethodInNonBlockingContext")
+    @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
@@ -59,7 +64,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
 
         // 请求无需鉴权，直接放通
         // 包括 未登录即可访问的接口
-        if (WHITE_LIST.contains(path)) {
+        if (ALLOW_LIST.contains(path)) {
             logger.info("无需鉴权");
             return chain.filter(exchange);
         }
@@ -75,22 +80,33 @@ public class TokenFilter implements GlobalFilter, Ordered {
             if (!checked) {
                 // jwt 校验失败
                 logger.warn("Token 异常");
+                ResultVO<Void> result = new ResultVO<>("500", "Token无效", null);
+                ServerHttpResponse response = exchange.getResponse();
+                byte[] cause = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
+                DataBuffer buffer = response.bufferFactory().wrap(cause);
+                response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+                return response.writeWith(Mono.just(buffer));
             } else {
+                // 开始鉴权
                 JWT jwt = JWTUtil.parseToken(token);
                 String username = (String) jwt.getPayload("username");
-                logger.info("用户名: {}", username);
+                logger.info("用户名: {}, 请求: {}", username, path);
+//                Boolean authed = sysUserClient.auth(username, path);
+                Future<Boolean> future = executorService.submit(() -> sysUserClient.auth(username, path));
+                Boolean authed = future.get();
+                if (authed) {
+                    ServerHttpRequest httpRequest = exchange.getRequest().mutate().header("username", username).build();
+                    exchange = exchange.mutate().request(httpRequest).build();
+                    return chain.filter(exchange);
+                } else {
+                    ResultVO<Void> result = new ResultVO<>("500", "无权限", null);
+                    ServerHttpResponse response = exchange.getResponse();
+                    byte[] cause = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
+                    DataBuffer buffer = response.bufferFactory().wrap(cause);
+                    response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+                    return response.writeWith(Mono.just(buffer));
+                }
             }
-//            Future<ResultVO<String>> result = executorService.submit(() -> userClient.login(token));
-//            try {
-//                ResultVO<String> resultVO = result.get();
-//                if (resultVO != null) {
-//                    logger.info(resultVO);
-//                } else {
-//                    logger.warn("Result is null");
-//                }
-//            } catch (InterruptedException | ExecutionException e) {
-//                e.printStackTrace();
-//            }
 
         } else {
             // 无 Token，直接返回未登录
@@ -113,7 +129,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
 //        logger.info(result.toString());
 
 
-        return chain.filter(exchange);
     }
 
     /**

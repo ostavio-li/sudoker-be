@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients(basePackages = {
-        "com.carlosli.sudoker.gateway.client"
+        "com.carlosli.common.client"
 })
 @SpringBootApplication
 @EnableDiscoveryClient

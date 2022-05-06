@@ -50,8 +50,6 @@ public class SysUserController {
         } else {
             SysUser user = users.get(0);
             if (password.equals(user.getPassword())) {
-//                redisTemplate.opsForValue().set(username, password);
-
                 return new ResultVO<String>().success().data(TokenUtil.generate(username));
             } else {
                 throw new AuthenticateException("密码错误");
@@ -66,9 +64,9 @@ public class SysUserController {
         return new ResultVO<List<SysResource>>().success().data(resources);
     }
 
-//    @PostMapping("/auth")
-//    public ResultVO<Boolean> auth(String username, String path) {
-//
-//    }
+    @PostMapping("/auth")
+    public Boolean auth(String username, String path) {
+        return userService.listResource(username).stream().anyMatch(sysResource -> path.equals(sysResource.getResourcePath()));
+    }
 
 }
